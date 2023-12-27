@@ -67,11 +67,14 @@ public class CategoryController {
     @PostMapping("/addcategory")
     public String addPerson(@Valid CategoryProduct categoryProduct, BindingResult result, Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("errorMessage", "Такая категория уже есть");
+            model.addAttribute("category", categoryProduct);
             return "category/new";
         }
 
         if (categoryRepository.existsByName(categoryProduct.getName())) {
             result.rejectValue("name", "error.categoryProduct", "Категория с таким именем уже существует");
+            model.addAttribute("category", categoryProduct);
             return "category/new";
         }
         categoryRepository.save(categoryProduct);
@@ -83,11 +86,14 @@ public class CategoryController {
     public String update(@PathVariable("id") long id, @Valid CategoryProduct categoryProduct, BindingResult result, Model model) {
         if (result.hasErrors()) {
             categoryProduct.setId(id);
+            model.addAttribute("errorMessage", "Такая категория уже есть");
+            model.addAttribute("category", categoryProduct);
             return "category/edit";
         }
 
         if (categoryRepository.existsByName(categoryProduct.getName())) {
             result.rejectValue("name", "error.categoryProduct", "Категория с таким именем уже существует");
+            model.addAttribute("category", categoryProduct);
             return "category/edit";
         }
         categoryRepository.save(categoryProduct);

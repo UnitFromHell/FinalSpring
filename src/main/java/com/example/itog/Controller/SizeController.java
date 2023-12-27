@@ -69,11 +69,15 @@ public class SizeController {
     @PostMapping("/addsize")
     public String addPerson(@Valid SizeProduct sizeProduct, BindingResult result, Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("errorMessage", "Такой размер уже есть");
+            model.addAttribute("size", sizeProduct);
             return "size/new";
         }
 
         if (SizeRepository.existsByName(sizeProduct.getName())) {
             result.rejectValue("name", "error.categoryProduct", "Размер с таким именем уже существует");
+            model.addAttribute("errorMessage", "Такой размер уже есть");
+            model.addAttribute("size", sizeProduct);
             return "size/new";
         }
         SizeRepository.save(sizeProduct);
@@ -85,11 +89,15 @@ public class SizeController {
     public String update(@PathVariable("id") long id, @Valid SizeProduct sizeProduct, BindingResult result, Model model) {
         if (result.hasErrors()) {
             sizeProduct.setId(id);
+            model.addAttribute("errorMessage", "Такой размер уже есть");
+            model.addAttribute("size", sizeProduct);
             return "size/edit";
         }
 
         if (SizeRepository.existsByName(sizeProduct.getName())) {
             result.rejectValue("name", "error.categoryProduct", "Размер с таким именем уже существует");
+            model.addAttribute("errorMessage", "Такой размер уже есть");
+            model.addAttribute("size", sizeProduct);
             return "size/edit";
         }
         SizeRepository.save(sizeProduct);

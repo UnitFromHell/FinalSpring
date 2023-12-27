@@ -69,15 +69,26 @@ public class TypeController {
     @PostMapping("/addtype")
     public String addPerson(@Valid TypeProduct typeProduct, BindingResult result, Model model) {
         if (result.hasErrors()) {
+            result.rejectValue("name", "error.typeProduct", "Тип с таким именем уже существует");
+            model.addAttribute("errorMessage", "Такой тип уже есть");
+            model.addAttribute("type", typeProduct);
             return "type/new";
         }
+        try {
+            if (typeRepository.existsByName(typeProduct.getName())) {
 
-        if (typeRepository.existsByName(typeProduct.getName())) {
-            result.rejectValue("name", "error.categoryProduct", "Тип с таким именем уже существует");
+                model.addAttribute("errorMessage", "Такой тип уже есть");
+                model.addAttribute("type", typeProduct);
+                return "type/new";
+            }
+            typeRepository.save(typeProduct);
+            model.addAttribute("types", typeRepository.findAll());
+        }
+        catch (Exception e){
+            model.addAttribute("errorMessage", "Такой тип уже есть или поле не заполнено");
+            model.addAttribute("type", typeProduct);
             return "type/new";
         }
-        typeRepository.save(typeProduct);
-        model.addAttribute("types", typeRepository.findAll());
         return "redirect:/type";
     }
 
@@ -85,11 +96,14 @@ public class TypeController {
     public String update(@PathVariable("id") long id, @Valid TypeProduct typeProduct, BindingResult result, Model model) {
         if (result.hasErrors()) {
             typeProduct.setId(id);
+            model.addAttribute("errorMessage", "Такой тип уже есть");
+            model.addAttribute("type", typeProduct);
             return "type/edit";
         }
 
         if (typeRepository.existsByName(typeProduct.getName())) {
-            result.rejectValue("name", "error.categoryProduct", "Тип с таким именем уже существует");
+            model.addAttribute("errorMessage", "Такой тип уже есть");
+            model.addAttribute("type", typeProduct);
             return "type/edit";
         }
         typeRepository.save(typeProduct);

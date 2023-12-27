@@ -45,7 +45,11 @@
             <input type="text" th:field="*{name}" class="form-control" id="name">
             <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
         </div>
+
         <button type="submit" class="btn btn-primary">Изменить!</button>
+        <div th:if="${errorMessage}" class="mb-3 text-danger">
+            <p th:text="${errorMessage}"></p>
+        </div>
     </form>
 </div>
 

@@ -14,9 +14,9 @@ public class CategoryProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @Column(unique = true )
     @NotBlank(message = "Категория не может быть пустым")
     @Size(min = 2, max = 30, message = "Длина категории минимум 2 символа и максимум 30 символов")
-    @Column(unique = true )
     private String name;
 
     @OneToMany(mappedBy = "categoryProduct")

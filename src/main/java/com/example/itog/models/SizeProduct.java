@@ -14,9 +14,10 @@ public class SizeProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @Column(unique = true)
     @NotNull(message = "Размер не может быть пустым")
-    @Min(value = 1, message = "Размер не может быть меньше 1")
-    @Max(value = 55, message = "Размер не может быть больше 55")
+    @DecimalMin(value = "1", message = "Размер не может быть меньше 1")
+    @DecimalMax(value = "55", message = "Размер не может быть больше 55")
     private double name;
 
     @OneToMany(mappedBy = "sizeProduct")

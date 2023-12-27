@@ -13,6 +13,7 @@ public class TypeProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @Column(unique = true)
     @NotBlank(message = "Тип не может быть пустым")
     @Size(min = 2, max = 30, message = "Длина типа минимум 2 символа и максимум 30 символов")
     private String name;
