@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/category">Категории</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/order">Заказы</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/people">Люди</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/product">Товары</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/size">Размеры</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/type">Типы</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/position">Товары на складе</a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<form th:action="@{/cklad/search}" th:method="GET">
+  <div class="container mb-3">
+    <label for="searchInput" class="form-label">Поиск</label>
+    <div class="input-group">
+      <input type="text" class="form-control" th:name="name" id="searchInput" placeholder="Название команды для поиска" aria-label="Поиск" aria-describedby="button-addon2">
+      <button class="btn btn-primary btn-outline-success text-dark" type="submit" id="button-addon2">Найти</button>
+    </div>
+  </div>
+</form>
+
+
+<div th:switch="${cklads}" class="container my-5">
+  <div class="row">
+    <div class="col-md-6">
+      <div th:case="*">
+        <table class="table" border="1">
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Адрес</th>
+            <th>Товар</th>
+            <th>Редактировать</th>
+            <th>Удалить</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="cklad: ${cklads}">
+            <td class="align-middle" th:text="${cklad.id}"></td>
+            <td class="align-middle" th:text="${cklad.name}"></td>
+            <td class="align-middle" th:text="${cklad.adress}"></td>
+            <td>
+              <from th:each="tour : ${cklad.getProducts()}">
+                <p th:text="${tour.getName()}"></p>
+              </from>
+            </td>
+            <td><a class="btn btn-link" th:href="@{/cklad/edit/{id}(id=${cklad.id})}">Редактировать</a></td>
+            <td><a class="btn btn-link" th:href="@{/cklad/delete/{id}(id=${cklad.id})}">Удалить</a></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="d-flex justify-content-between align-items-center">
+        <p class="my-5"><a class="btn btn-primary" href="/cklad/new">Добавить</a></p>
+<!--        <a href="/cklad/new2" class="btn btn-success">Добавить товар на склад</a>-->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script th:inline="javascript">
+  /* Очистка формы после отправки */
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('form').reset();
+  });
+</script>
+</body>
+</html>

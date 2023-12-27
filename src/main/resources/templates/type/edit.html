@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update animal</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/category">Категории</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/cklad">Склады</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/order">Заказы</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/people">Люди</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/product">Товары</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/size">Размеры</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/position">Товары на складе</a>
+                </li>
+
+
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container mt-5">
+    <h1>Изменение <span th:text="${type.getName()}"/> </h1>
+    <form th:method="POST" th:action="@{/type/{id}(id=${type.getId()})}" th:object="${type}">
+        <div class="form-group"> <label for="name">Введите Тип</label>
+            <input type="text" th:field="*{name}" class="form-control" id="name">
+            <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+        </div>
+        <button type="submit" class="btn btn-primary">Изменить!</button>
+    </form>
+</div>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
